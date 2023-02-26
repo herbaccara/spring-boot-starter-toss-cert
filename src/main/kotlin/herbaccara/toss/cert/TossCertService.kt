@@ -140,8 +140,7 @@ class TossCertService(
         return runCatching { block.invoke(accessToken()) }
             .recoverCatching { exception ->
                 if (exception is Unauthorized) {
-                    token()
-                    block.invoke(accessToken())
+                    block.invoke(token().accessToken)
                 }
                 throw exception
             }
