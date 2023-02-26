@@ -10,6 +10,7 @@ import herbaccara.toss.cert.model.AuthResultSuccess
 import herbaccara.toss.cert.model.AuthStatusSuccess
 import herbaccara.toss.cert.model.TossCertToken
 import herbaccara.toss.cert.model.store.TossCertTokenStore
+import im.toss.cert.sdk.TossCertSession
 import im.toss.cert.sdk.TossCertSessionGenerator
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
@@ -29,13 +30,8 @@ class TossCertService(
     private val tokenStore: TossCertTokenStore
 ) {
     private val certSessionGenerator by lazy { TossCertSessionGenerator() }
-    private val certSession by lazy { certSessionGenerator.generate() }
 
-    fun generateSessionKey(): String = certSession.sessionKey
-
-    fun encrypt(plainText: String): String = certSession.encrypt(plainText)
-
-    fun decrypt(encryptedText: String): String = certSession.decrypt(encryptedText)
+    fun generateSession(): TossCertSession = certSessionGenerator.generate()
 
 //    fun toError(throwable: Throwable): Optional<Error> {
 //        return if (throwable is HttpStatusCodeException) {
@@ -120,7 +116,11 @@ class TossCertService(
     /***
      * 본인인증 결과조회. 결과조회 API는 성공 기준으로 최대 2회까지 조회가 가능
      */
-    fun authResult(accessToken: String, txId: String, sessionKey: String = generateSessionKey()): AuthResultSuccess {
+    fun authResult(
+        accessToken: String,
+        txId: String,
+        sessionKey: String = generateSession().sessionKey
+    ): AuthResultSuccess {
         val uri = "https://cert.toss.im/api/v2/sign/user/auth/result"
         val form = mapOf("txId" to txId, "sessionKey" to sessionKey)
 
