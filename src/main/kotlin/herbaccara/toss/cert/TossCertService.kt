@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import herbaccara.boot.autoconfigure.toss.cert.TossCertProperties
-import herbaccara.toss.cert.form.AuthRequest
+import herbaccara.toss.cert.form.AuthRequestForm
 import herbaccara.toss.cert.model.AuthRequestSuccess
 import herbaccara.toss.cert.model.AuthResultSuccess
 import herbaccara.toss.cert.model.AuthStatusSuccess
@@ -97,10 +97,10 @@ class TossCertService(
     /***
      * 본인인증 요청
      */
-    fun authRequest(accessToken: String, authRequest: AuthRequest): AuthRequestSuccess {
+    fun authRequest(accessToken: String, authRequestForm: AuthRequestForm): AuthRequestSuccess {
         val uri = "https://cert.toss.im/api/v2/sign/user/auth/request"
 
-        return postForObject(uri, accessToken, authRequest)
+        return postForObject(uri, accessToken, authRequestForm)
     }
 
     /***
@@ -147,8 +147,8 @@ class TossCertService(
             .getOrThrow()
     }
 
-    fun authRequest(authRequest: AuthRequest): AuthRequestSuccess {
-        return recoverAuth { accessToken -> authRequest(accessToken, authRequest) }
+    fun authRequest(authRequestForm: AuthRequestForm): AuthRequestSuccess {
+        return recoverAuth { accessToken -> authRequest(accessToken, authRequestForm) }
     }
 
     fun authStatus(txId: String): AuthStatusSuccess {

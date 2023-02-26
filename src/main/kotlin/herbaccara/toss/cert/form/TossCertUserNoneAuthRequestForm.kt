@@ -11,6 +11,6 @@ data class TossCertUserNoneAuthRequestForm(
     override val failCallbackUrl: String? = null,
     override val nonce: String? = null,
     override val expireSeconds: Int? = null
-) : AuthRequest {
+) : AuthRequestForm {
     override val requestType: RequestType = RequestType.USER_NONE
 }
