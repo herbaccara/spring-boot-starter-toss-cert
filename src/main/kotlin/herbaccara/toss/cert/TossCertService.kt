@@ -17,6 +17,7 @@ import org.springframework.http.HttpMethod
 import org.springframework.http.MediaType
 import org.springframework.util.LinkedMultiValueMap
 import org.springframework.util.MultiValueMap
+import org.springframework.web.client.HttpClientErrorException.Unauthorized
 import org.springframework.web.client.RestTemplate
 import org.springframework.web.client.postForObject
 import java.util.*
@@ -87,7 +88,8 @@ class TossCertService(
 
             val httpEntity: HttpEntity<R> = HttpEntity<R>(body, headers)
 
-            val response: JsonNode = restTemplate.exchange(uri, HttpMethod.POST, httpEntity, JsonNode::class.java).body!!
+            val response: JsonNode =
+                restTemplate.exchange(uri, HttpMethod.POST, httpEntity, JsonNode::class.java).body!!
 
             val success = response["success"]
             objectMapper.readValue(success.toString(), T::class.java)
@@ -128,38 +130,33 @@ class TossCertService(
     /***
      * 401 에러인 경우 token 재발급 처리
      */
-//    private fun <T> tryAuth(block: Function<String, T>): Try<T> {
-//        // token 없을 시 UUID 랜덤으로 생성 처리. 의도된 잘못된 토큰 정보이다.
-//        // token validate api 가 따로 없어서 401 에러를 어떻게든 볼 수 밖에 없다. 일해라 toss
-//        val accessToken = Supplier<String> {
-//            val token: Token = tokenStore.load().orElse(null)
-//            if (token != null) {
-//                return@Supplier token.getAccessToken()
-//            }
-//            UUID.randomUUID().toString()
-//        }
-//        return Try.of { block.apply(accessToken.get()) }
-//            .recover(Unauthorized::class.java) { unauthorized ->
-//                token() // 토큰 재발급 후 token store 갱신
-//                block.apply(accessToken.get())
-//            }
-//    }
-//
-//    fun authRequest(authRequest: AuthRequest?): Try<AuthRequestSuccess> {
-//        return tryAuth(Function<String, Any> { accessToken: String? -> authRequest(accessToken, authRequest) })
-//    }
-//
-//    fun authStatus(txId: String): Try<AuthStatusSuccess> {
-//        return tryAuth(Function<String, Any> { accessToken: String -> authStatus(accessToken, txId) })
-//    }
-//
-//    fun authResult(txId: String): Try<AuthResultSuccess> {
-//        return tryAuth(Function<String, Any> { accessToken: String ->
-//            authResult(
-//                accessToken,
-//                txId,
-//                generateSessionKey()
-//            )
-//        })
-//    }
+    private fun <T> recoverAuth(block: (String) -> T): T {
+        // token 없을 시 UUID 랜덤으로 생성 처리. 의도된 잘못된 토큰 정보이다.
+        // token validate api 가 따로 없어서 401 에러를 어떻게든 볼 수 밖에 없다. 일해라 toss
+        val accessToken: () -> String = {
+            tokenStore.load()?.accessToken ?: UUID.randomUUID().toString()
+        }
+
+        return runCatching { block.invoke(accessToken()) }
+            .recoverCatching { exception ->
+                if (exception is Unauthorized) {
+                    token()
+                    block.invoke(accessToken())
+                }
+                throw exception
+            }
+            .getOrThrow()
+    }
+
+    fun authRequest(authRequest: AuthRequest): AuthRequestSuccess {
+        return recoverAuth { accessToken -> authRequest(accessToken, authRequest) }
+    }
+
+    fun authStatus(txId: String): AuthStatusSuccess {
+        return recoverAuth { accessToken -> authStatus(accessToken, txId) }
+    }
+
+    fun authResult(txId: String): AuthResultSuccess {
+        return recoverAuth { accessToken -> authResult(accessToken, txId) }
+    }
 }
