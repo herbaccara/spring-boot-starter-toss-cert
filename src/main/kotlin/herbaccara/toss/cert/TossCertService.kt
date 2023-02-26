@@ -1,6 +1,5 @@
 package herbaccara.toss.cert
 
-import com.fasterxml.jackson.core.JsonProcessingException
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import herbaccara.boot.autoconfigure.toss.cert.TossCertProperties
@@ -76,22 +75,19 @@ class TossCertService(
     }
 
     private inline fun <R, reified T> postForObject(uri: String, accessToken: String, body: R): T {
-        return try {
-            val headers = HttpHeaders().apply {
-                contentType = MediaType.APPLICATION_JSON
-                setBearerAuth(accessToken)
-            }
-
-            val httpEntity: HttpEntity<R> = HttpEntity<R>(body, headers)
-
-            val response: JsonNode =
-                restTemplate.exchange(uri, HttpMethod.POST, httpEntity, JsonNode::class.java).body!!
-
-            val success = response["success"]
-            objectMapper.readValue(success.toString(), T::class.java)
-        } catch (e: JsonProcessingException) {
-            throw RuntimeException(e)
+        val headers = HttpHeaders().apply {
+            contentType = MediaType.APPLICATION_JSON
+            setBearerAuth(accessToken)
         }
+
+        val httpEntity: HttpEntity<R> = HttpEntity<R>(body, headers)
+
+        val response: JsonNode =
+            restTemplate.exchange(uri, HttpMethod.POST, httpEntity, JsonNode::class.java).body!!
+
+        val success = response["success"]
+
+        return objectMapper.readValue(success.toString(), T::class.java)
     }
 
     /***
