@@ -1,5 +1,7 @@
 package herbaccara.toss.cert.form
 
+import com.fasterxml.jackson.annotation.JsonInclude
+
 /***
  * Case 2. 앱 푸쉬를 이용해서 인증 요청하기
  * Case 3. 토스 서버에서 생성하는 앱스킴을 이용해서 인증 요청하기
@@ -13,12 +15,18 @@ package herbaccara.toss.cert.form
  * @param userBirthday 고객의 생년월일 8자리 YYYYMMDD형식
  * @param sessionKey API에서 사용자의 개인정보 전달이 필요한 경우
  */
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class TossCertUserPersonalAuthRequestForm(
     val triggerType: TriggerType,
     val userName: String,
     val userPhone: String,
     val userBirthday: String,
-    val sessionKey: String
+    val sessionKey: String,
+
+    override val successCallbackUrl: String? = null,
+    override val failCallbackUrl: String? = null,
+    override val nonce: String? = null,
+    override val expireSeconds: Int? = null
 ) : AuthRequest {
     override val requestType: RequestType = RequestType.USER_PERSONAL
 }

@@ -32,7 +32,7 @@ class TossCertServiceTest {
     @Test
     fun authRequest1() {
         val token = tossCertService.token()
-        val response = tossCertService.authRequest(token.accessToken, TossCertUserNoneAuthRequestForm)
+        val response = tossCertService.authRequest(token.accessToken, TossCertUserNoneAuthRequestForm())
         println(response)
         assertNotNull(response)
     }
@@ -71,14 +71,15 @@ class TossCertServiceTest {
     fun authResult() {
         val sessionKey = tossCertService.generateSessionKey()
         val token = tossCertService.token()
-        val authRequest = tossCertService.authRequest(token.accessToken, TossCertUserNoneAuthRequestForm)
+        val authRequest = tossCertService.authRequest(token.accessToken, TossCertUserNoneAuthRequestForm())
 
         val txId: String = authRequest.txId
         val authStatus = tossCertService.authStatus(token.accessToken, txId)
+        println(authStatus)
 
         assertThrows(BadRequest::class.java) {
             val authResult = tossCertService.authResult(token.accessToken, txId, sessionKey)
-            println()
+            println(authResult)
         }
     }
 }
