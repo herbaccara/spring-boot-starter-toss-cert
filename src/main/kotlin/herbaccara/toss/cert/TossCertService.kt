@@ -128,11 +128,11 @@ class TossCertService(
     }
 
     /***
-     * 401 에러인 경우 token 재발급 처리
+     * 401 에러인 경우 token 재발급 처리 (1회)
      */
     private fun <T> recoverAuth(block: (String) -> T): T {
         // token 없을 시 UUID 랜덤으로 생성 처리. 의도된 잘못된 토큰 정보이다.
-        // token validate api 가 따로 없어서 401 에러를 어떻게든 볼 수 밖에 없다. 일해라 toss
+        // token validate api 가 따로 없어서 401 에러를 어떻게든 볼 수 밖에 없다.
         val accessToken: () -> String = {
             tokenStore.load()?.accessToken ?: UUID.randomUUID().toString()
         }
