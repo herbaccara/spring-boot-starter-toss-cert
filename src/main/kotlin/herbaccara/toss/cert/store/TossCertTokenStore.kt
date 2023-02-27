@@ -1,4 +1,4 @@
-package herbaccara.toss.cert.model.store
+package herbaccara.toss.cert.store
 
 import herbaccara.toss.cert.model.TossCertToken
 

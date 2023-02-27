@@ -4,8 +4,8 @@ import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import herbaccara.toss.cert.TossCertService
-import herbaccara.toss.cert.model.store.TossCertInMemoryTokenStore
-import herbaccara.toss.cert.model.store.TossCertTokenStore
+import herbaccara.toss.cert.store.TossCertInMemoryTokenStore
+import herbaccara.toss.cert.store.TossCertTokenStore
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.boot.autoconfigure.AutoConfiguration
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean

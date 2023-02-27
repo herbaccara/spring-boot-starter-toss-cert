@@ -8,7 +8,7 @@ import herbaccara.toss.cert.model.AuthRequestSuccess
 import herbaccara.toss.cert.model.AuthResultSuccess
 import herbaccara.toss.cert.model.AuthStatusSuccess
 import herbaccara.toss.cert.model.TossCertToken
-import herbaccara.toss.cert.model.store.TossCertTokenStore
+import herbaccara.toss.cert.store.TossCertTokenStore
 import im.toss.cert.sdk.TossCertSession
 import im.toss.cert.sdk.TossCertSessionGenerator
 import org.springframework.http.HttpEntity

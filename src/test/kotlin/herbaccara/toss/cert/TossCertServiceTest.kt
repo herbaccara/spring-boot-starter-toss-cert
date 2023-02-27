@@ -69,7 +69,8 @@ class TossCertServiceTest {
 
     @Test
     fun authResult() {
-        val sessionKey = tossCertService.generateSessionKey()
+        val session = tossCertService.generateSession()
+        val sessionKey = session.sessionKey
         val token = tossCertService.token()
         val authRequest = tossCertService.authRequest(token.accessToken, TossCertUserNoneAuthRequestForm())
 
