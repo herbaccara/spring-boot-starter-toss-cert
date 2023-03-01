@@ -112,6 +112,7 @@ class TossCertService(
     /***
      * 본인인증 결과조회. 결과조회 API는 성공 기준으로 최대 2회까지 조회가 가능
      */
+    @JvmOverloads
     fun authResult(
         accessToken: String,
         txId: String,
