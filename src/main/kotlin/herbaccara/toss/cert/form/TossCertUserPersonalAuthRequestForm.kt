@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonInclude
  * @param sessionKey API에서 사용자의 개인정보 전달이 필요한 경우
  */
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-data class TossCertUserPersonalAuthRequestForm(
+data class TossCertUserPersonalAuthRequestForm @JvmOverloads constructor(
     val triggerType: TriggerType,
     val userName: String,
     val userPhone: String,

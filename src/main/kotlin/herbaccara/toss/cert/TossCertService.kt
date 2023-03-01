@@ -49,11 +49,13 @@ class TossCertService(
 //        } else Optional.empty()
 //    }
 
+    fun token(): TossCertToken = token(properties.clientId, properties.clientSecret)
+
     /***
      * Access Token 발급. 토큰의 수명은 3600초 (1시간).
      * 이미 유효한 토큰을 가지고 있는 상태에서 새로운 토큰 발급 API 를 반복 호출 x
      */
-    fun token(): TossCertToken {
+    fun token(clientId: String, clientSecret: String): TossCertToken {
         val uri = "https://oauth2.cert.toss.im/token"
 
         val headers = HttpHeaders().apply {
@@ -62,8 +64,8 @@ class TossCertService(
 
         val form = LinkedMultiValueMap<String, String>().apply {
             add("grant_type", "client_credentials")
-            add("client_id", properties.clientId)
-            add("client_secret", properties.clientSecret)
+            add("client_id", clientId)
+            add("client_secret", clientSecret)
             add("scope", "ca")
         }
 
