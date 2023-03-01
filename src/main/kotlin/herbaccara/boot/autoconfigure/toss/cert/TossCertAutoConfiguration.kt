@@ -3,8 +3,8 @@ package herbaccara.boot.autoconfigure.toss.cert
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import herbaccara.toss.cert.TossCertService
-import herbaccara.toss.cert.model.store.TossCertInMemoryTokenStore
-import herbaccara.toss.cert.model.store.TossCertTokenStore
+import herbaccara.toss.cert.store.TossCertInMemoryTokenStore
+import herbaccara.toss.cert.store.TossCertTokenStore
 import org.springframework.boot.autoconfigure.AutoConfiguration
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty

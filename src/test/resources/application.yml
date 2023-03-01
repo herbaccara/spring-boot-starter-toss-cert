@@ -3,4 +3,3 @@ toss:
     enabled: true
     client-id: test_a8e23336d673ca70922b485fe806eb2d
     client-secret: test_418087247d66da09fda1964dc4734e453c7cf66a7a9e3
-    fail-on-unknown-properties: true
