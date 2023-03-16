@@ -1,6 +1,6 @@
 package herbaccara.boot.autoconfigure.toss.cert
 
-import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import herbaccara.toss.cert.TossCertService
 import herbaccara.toss.cert.store.TossCertInMemoryTokenStore
@@ -19,16 +19,8 @@ import java.util.*
 
 @AutoConfiguration
 @EnableConfigurationProperties(TossCertProperties::class)
-@ConditionalOnProperty(prefix = "toss.cert", value = ["enabled"], havingValue = "true")
+@ConditionalOnProperty(prefix = "toss.cert", value = ["enabled"], havingValue = "true", matchIfMissing = true)
 class TossCertAutoConfiguration {
-
-    @Bean
-    @ConditionalOnMissingBean
-    fun objectMapper(): ObjectMapper {
-        return jacksonObjectMapper().apply {
-            findAndRegisterModules()
-        }
-    }
 
     @Bean
     @ConditionalOnMissingBean
@@ -38,14 +30,18 @@ class TossCertAutoConfiguration {
 
     @Bean
     fun tossCertService(
-        objectMapper: ObjectMapper,
-        customizers: List<TossCertRestTemplateBuilderCustomizer>,
-        interceptors: List<TossCertClientHttpRequestInterceptor>,
         properties: TossCertProperties,
-        tokenStore: TossCertTokenStore
+        tokenStore: TossCertTokenStore,
+        customizers: List<TossCertRestTemplateBuilderCustomizer>,
+        interceptors: List<TossCertClientHttpRequestInterceptor>
     ): TossCertService {
         if (properties.clientId.isEmpty()) throw NullPointerException()
         if (properties.clientSecret.isEmpty()) throw NullPointerException()
+
+        val objectMapper = jacksonObjectMapper().apply {
+            findAndRegisterModules()
+            configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, properties.failOnUnknownProperties)
+        }
 
         val restTemplate = RestTemplateBuilder()
             .additionalInterceptors(*interceptors.toTypedArray())
