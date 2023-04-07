@@ -104,7 +104,7 @@ data class AuthResultSuccess(
          */
         private val zipCode: String? = null,
 
-        /***
+        /**
          * 토스 앱 ‘내 정보’에 등록된 개인정보 중 이메일 주소를 제공합니다.
          */
         private val email: String? = null

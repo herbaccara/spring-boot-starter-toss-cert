@@ -92,7 +92,7 @@ class TossCertService(
         return objectMapper.readValue(success.toString(), T::class.java)
     }
 
-    /***
+    /**
      * 본인인증 요청
      */
     fun authRequest(accessToken: String, authRequestForm: AuthRequestForm): AuthRequestSuccess {
@@ -101,7 +101,7 @@ class TossCertService(
         return postForObject(uri, accessToken, authRequestForm)
     }
 
-    /***
+    /**
      * 본인인증 상태조회
      */
     fun authStatus(accessToken: String, txId: String): AuthStatusSuccess {
@@ -111,7 +111,7 @@ class TossCertService(
         return postForObject(uri, accessToken, form)
     }
 
-    /***
+    /**
      * 본인인증 결과조회. 결과조회 API는 성공 기준으로 최대 2회까지 조회가 가능
      */
     @JvmOverloads
@@ -126,7 +126,7 @@ class TossCertService(
         return postForObject(uri, accessToken, form)
     }
 
-    /***
+    /**
      * 401 에러인 경우 token 재발급 처리 (1회)
      */
     private fun <T> recoverAuth(block: (String) -> T): T {
