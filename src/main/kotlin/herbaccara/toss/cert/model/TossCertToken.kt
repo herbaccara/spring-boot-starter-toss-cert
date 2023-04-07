@@ -11,7 +11,7 @@ data class TossCertToken(
     @field:JsonProperty("token_type")
     private val tokenType: String,
 
-    /***
+    /**
      * Access Token 만료 시간(초 단위)
      */
     @field:JsonProperty("expires_in")

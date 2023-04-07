@@ -10,7 +10,7 @@ data class Error(
     val title: String? = null
 ) {
 
-    /***
+    /**
      * [에러코드](https://toss.im/tosscert/docs/guides/errorcode#%EB%B3%B8%EC%9D%B8%EC%9D%B8%EC%A6%9D-%EB%B0%8F-%EC%A0%84%EC%9E%90%EC%84%9C%EB%AA%85-%EC%97%90%EB%9F%AC%EC%BD%94%EB%93%9C)
      */
     enum class ErrorCode {

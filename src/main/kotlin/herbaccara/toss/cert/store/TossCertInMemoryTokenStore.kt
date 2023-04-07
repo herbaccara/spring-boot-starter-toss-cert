@@ -3,7 +3,7 @@ package herbaccara.toss.cert.store
 import herbaccara.toss.cert.model.TossCertToken
 import java.util.concurrent.atomic.AtomicReference
 
-/***
+/**
  * 분산 환경에서는 사용 금지
  */
 class TossCertInMemoryTokenStore : TossCertTokenStore {

@@ -2,7 +2,7 @@ package herbaccara.toss.cert.form
 
 import com.fasterxml.jackson.annotation.JsonInclude
 
-/***
+/**
  * Case1. 표준창을 이용해서 인증 요청하기
  */
 @JsonInclude(JsonInclude.Include.NON_EMPTY)

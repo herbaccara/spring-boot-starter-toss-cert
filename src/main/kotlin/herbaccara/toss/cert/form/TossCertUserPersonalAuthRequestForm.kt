@@ -2,7 +2,7 @@ package herbaccara.toss.cert.form
 
 import com.fasterxml.jackson.annotation.JsonInclude
 
-/***
+/**
  * Case 2. 앱 푸쉬를 이용해서 인증 요청하기
  * Case 3. 토스 서버에서 생성하는 앱스킴을 이용해서 인증 요청하기
  *
